@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Our Funky HTML Page</title>
+    <meta name="description" content="Our first page">
+    <meta name="keywords" content="html tutorial template">
+</head>
+
+<body>
+    <form class="form">
+        <div class="main">
+            <div class="block">
+                <div class="input-wrapper video-type">
+                    <label for="video_type">Выберите вид видеоролика</label>
+                    <select name="video_type" id="video_type">
+                        <option value="logo">Анимация логотипа</option>
+                        <option value="intro">Анимированные интро</option>
+                        <option value="explainer">Эксплейнер</option>
+                        <option value="presentation">Видеопрезентации</option>
+                        <option value="adv">Рекламный ролик</option>
+                        <option value="doodle">Дудл анимация</option>
+                    </select>
+                </div>
+                <div class="input-wrapper video-format">
+                    <label for="video_format">Выберите формат</label>
+                    <select name="video_format" id="video_format">
+                        <option id='default_format' value="0">2D</option>
+                        <option value="1">3D</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="block">
+
+                <div class="input-wrapper radio duration">
+                    <span>Длительность</span>
+                    <label>
+                        <input id='default_timing' type="radio" name="duration" value='0' checked="checked">
+                        <label for="duration">15 сек</label><br>
+                    </label>
+                    <label>
+                        <input type="radio" name="duration" value='1'>
+                        <label for="duration">30 сек</label><br>
+                    </label>
+                    <label>
+                        <input type="radio" name="duration" value='2'>
+                        <label for="duration">60 сек</label><br>
+                    </label>
+                    <label>
+                        <input type="radio" name="duration" value='3'>
+                        <label for="duration">120 сек</label><br>
+                    </label>
+                    <label>
+                        <input type="radio" name="duration" value='4'>
+                        <label for="duration">180 сек</label><br>
+                    </label>
+
+                </div>
+                <div class="input-wrapper radio chars">
+                    <span>Персонажи</span>
+                    <label>
+                        <input type="radio" name="chars" value='0' checked="checked">
+                        <label for="chars">Нет</label><br>
+                    </label>
+                    <label>
+                        <input type="radio" name="chars" value='1'>
+                        <label for="chars">1</label><br>
+                    </label>
+                    <label>
+                        <input type="radio" name="chars" value='2'>
+                        <label for="chars">2</label><br>
+                    </label>
+                    <label>
+                        <input type="radio" name="chars" value='3'>
+                        <label for="chars">3</label><br>
+                    </label>
+                    <label>
+                        <input type="radio" name="chars" value='4'>
+                        <label for="chars">4</label><br>
+                    </label>
+                    <label>
+                        <input type="radio" name="chars" value='5'>
+                        <label for="chars">5</label><br>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="result">
+            <span>Предварительная стоимость</span>
+            <span id="results">-</span>
+        </div>
+    </form>
+    <script>
+        const data = {
+            video_type: 'logo',
+            video_format: '0',
+            duration: '0',
+            chars: '0',
+        }
+
+        const costsArray = {
+            logo: [[7000, 15000]],
+            intro: [[10000, 25000], [15000, 50000]],
+            explainer: [[15000, null], [22500, null], [33750, null], [50625, null], [75938, null]],
+            presentation: [[10000, null], [1500, null], [22500, null], [33750, null], [50625, null]],
+            adv: [[15000, 30000], [22500, 60000], [33750, 120000], [50625, 240000], [75938, 480000]],
+            doodle: [[10000, null], [15000, null], [22500, null], [33750, null], [50625, null]],
+        }
+
+        const charsCosts = [0, 5000, 7500, 11250, 16875, 25313]
+
+        const form = document.querySelector('form')
+        const result = document.querySelector('#results')
+        const videoSelect = document.querySelector('#video_type')
+        const defaultFormat = document.querySelector('#default_format')
+        const defaultTiming = document.querySelector('#default_timing')
+        const durationInputs = document.querySelectorAll('.input-wrapper.duration input')
+        const durationLabels = document.querySelectorAll('.input-wrapper.duration label > label')
+        const videoFormatOptions = document.querySelectorAll('#video_format option')
+
+        const disableField = () => {
+            const videoCosts = costsArray[data.video_type]
+            durationInputs.forEach((el, index, arr) => {
+                if (index >= videoCosts.length) {
+                    el.disabled = true
+                } else { el.disabled = false }
+            })
+            durationLabels.forEach((el, index) => {
+                if (index >= videoCosts.length) {
+                    el.style.color = 'grey'
+                } else {
+                    el.style.color = 'inherit';
+                }
+            })
+        }
+
+        const getResultSum = () => {
+            const videoCosts = costsArray[data.video_type]
+            const timingCosts = videoCosts[data.duration]
+            const formatCosts = timingCosts[data.video_format]
+
+            videoFormatOptions.forEach((el, index) => {
+                if (!timingCosts[index]) {
+                    el.disabled = true
+                    defaultFormat.selected = true
+                } else { el.disabled = false }
+            })
+
+            return (formatCosts + charsCosts[data.chars]).toLocaleString();
+        }
+
+        videoSelect.addEventListener('change', () => {
+            defaultTiming.checked = true
+            data.duration = 0
+        })
+
+        form.addEventListener('change', (e) => {
+            const selectedProp = e.target.name
+            const selectedValue = e.target.value
+            data[selectedProp] = selectedValue
+
+            disableField()
+
+            result.innerHTML = `${getResultSum()} &#8381`
+        })
+
+        disableField()
+        result.innerHTML = `${getResultSum()} &#8381`
+
+    </script>
+
+    <style>
+        form {
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+
+        .main {
+            padding: 16px 16px;
+        }
+
+        .block {
+            display: flex;
+            justify-content: space-between;
+            /* gap: 10%; */
+        }
+
+        .input-wrapper {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-wrapper select {
+            width: 100%;
+            border: 2px solid #D7EC00;
+            height: 1.8rem;
+        }
+
+        .input-wrapper select:focus-visible {
+            outline-color: #D7EC00;
+        }
+
+        .radio {
+            margin-top: 16px;
+        }
+
+        .radio input[type="radio"] {
+            /* Add if not using autoprefixer */
+            -webkit-appearance: none;
+            appearance: none;
+            /* For iOS < 15 to remove gradient background */
+            background-color: #fff;
+            /* Not removed via appearance */
+            margin: 0;
+
+            font: inherit;
+            color: #D7EC00;
+            width: 1.15em;
+            height: 1.15em;
+            border: 0.1em solid #D7EC00;
+            border-radius: 50%;
+            transform: translateY(-0.075em);
+            display: grid;
+            place-content: center;
+        }
+
+        .radio input[type="radio"]::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--form-control-color);
+        }
+
+        .radio input[type="radio"]:checked::before {
+            transform: scale(1);
+            background-color: #D7EC00;
+        }
+
+        .radio>label {
+            display: flex;
+            gap: 8px;
+        }
+
+        .result {
+            display: flex;
+            flex-direction: column;
+            background-color: #D7EC00;
+            font: inherit;
+            color: white;
+            align-items: end;
+            padding: 16px 16px;
+        }
+    </style>
+</body>
+
+</html>
