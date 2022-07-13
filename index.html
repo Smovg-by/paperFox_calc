@@ -80,10 +80,10 @@
                         <input type="radio" name="chars" value='4'>
                         <label for="chars">4</label><br>
                     </label>
-                    <label>
+                    <!-- <label>
                         <input type="radio" name="chars" value='5'>
                         <label for="chars">5</label><br>
-                    </label>
+                    </label> -->
                 </div>
             </div>
         </div>
@@ -109,7 +109,8 @@
             doodle: [[10000, null], [15000, null], [22500, null], [33750, null], [50625, null]],
         }
 
-        const charsCosts = [5000, 7500, 11250, 16875, 25313]
+        //const charsCosts = [5000, 7500, 11250, 16875, 25313]
+        const charsCosts = [5000, 7500, 11250, 16875]
 
         const form = document.querySelector('form')
         const result = document.querySelector('#results')
@@ -208,7 +209,7 @@
         .input-wrapper select {
             width: 100%;
             border: 2px solid #D7EC00;
-            height: 1.8rem;
+            height: 30px;
         }
 
         .input-wrapper select:focus-visible {
@@ -298,6 +299,10 @@
             .radio.chars {
                 width: max-content;
                 margin-right: 15px;
+            }
+
+            .main {
+                padding: 16px 0;
             }
         }
     </style>
