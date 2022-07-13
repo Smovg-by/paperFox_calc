@@ -103,12 +103,12 @@
             logo: [[7000, 15000]],
             intro: [[10000, 25000], [15000, 50000]],
             explainer: [[15000, null], [22500, null], [33750, null], [50625, null], [75938, null]],
-            presentation: [[10000, null], [1500, null], [22500, null], [33750, null], [50625, null]],
+            presentation: [[10000, null], [15000, null], [22500, null], [33750, null], [50625, null]],
             adv: [[15000, 30000], [22500, 60000], [33750, 120000], [50625, 240000], [75938, 480000]],
             doodle: [[10000, null], [15000, null], [22500, null], [33750, null], [50625, null]],
         }
 
-        const charsCosts = [0, 5000, 7500, 11250, 16875, 25313]
+        const charsCosts = [5000, 7500, 11250, 16875, 25313]
 
         const form = document.querySelector('form')
         const result = document.querySelector('#results')
@@ -138,16 +138,18 @@
         const getResultSum = () => {
             const videoCosts = costsArray[data.video_type]
             const timingCosts = videoCosts[data.duration]
-            const formatCosts = timingCosts[data.video_format]
 
             videoFormatOptions.forEach((el, index) => {
                 if (!timingCosts[index]) {
-                    el.disabled = true
                     defaultFormat.selected = true
+                    data.video_format = 0
+                    el.disabled = true                    
                 } else { el.disabled = false }
             })
 
-            return (formatCosts + charsCosts[data.chars]).toLocaleString();
+            const formatCosts = timingCosts[data.video_format]
+
+            return (formatCosts + charsCosts[data.duration] * data.chars).toLocaleString();
         }
 
         videoSelect.addEventListener('change', () => {
@@ -183,7 +185,6 @@
         .block {
             display: flex;
             justify-content: space-between;
-            /* gap: 10%; */
         }
 
         .input-wrapper {
