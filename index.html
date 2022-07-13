@@ -5,12 +5,13 @@
     <title>Our Funky HTML Page</title>
     <meta name="description" content="Our first page">
     <meta name="keywords" content="html tutorial template">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
     <form class="form">
         <div class="main">
-            <div class="block">
+            <div class="block selects">
                 <div class="input-wrapper video-type">
                     <label for="video_type">Выберите вид видеоролика</label>
                     <select name="video_type" id="video_type">
@@ -31,7 +32,7 @@
                 </div>
 
             </div>
-            <div class="block">
+            <div class="block radio-buttons">
 
                 <div class="input-wrapper radio duration">
                     <span>Длительность</span>
@@ -143,7 +144,7 @@
                 if (!timingCosts[index]) {
                     defaultFormat.selected = true
                     data.video_format = 0
-                    el.disabled = true                    
+                    el.disabled = true
                 } else { el.disabled = false }
             })
 
@@ -256,6 +257,25 @@
             color: white;
             align-items: end;
             padding: 16px 16px;
+        }
+
+        @media only screen and (max-width: 500px) {
+            .selects {
+                flex-direction: column;
+            }
+            .input-wrapper {
+                width: 100%;
+            }
+            .video-format {
+                margin-top: 16px;
+            }
+            .radio.duration {
+                width: max-content
+            }
+            .radio.chars {
+                width: max-content;
+                margin-right: 15px;
+            }
         }
     </style>
 </body>
