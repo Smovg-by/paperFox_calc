@@ -35,7 +35,7 @@
             <div class="block radio-buttons">
 
                 <div class="input-wrapper radio duration">
-                    <span>Длительность</span>
+                    <span class="title">Длительность</span>
                     <label>
                         <input id='default_timing' type="radio" name="duration" value='0' checked="checked">
                         <label for="duration">15 сек</label><br>
@@ -59,7 +59,7 @@
 
                 </div>
                 <div class="input-wrapper radio chars">
-                    <span>Персонажи</span>
+                    <span class="title">Персонажи</span>
                     <label>
                         <input type="radio" name="chars" value='0' checked="checked">
                         <label for="chars">Нет</label><br>
@@ -88,7 +88,7 @@
             </div>
         </div>
         <div class="result">
-            <span>Предварительная стоимость</span>
+            <span class="prelim">Предварительная стоимость</span>
             <span id="results">-</span>
         </div>
     </form>
@@ -195,6 +195,16 @@
             gap: 8px;
         }
 
+        .input-wrapper .title {
+            font-size: 17px;
+            color: #000;
+        }
+
+        .selects label {
+            font-size: 17px;
+            color: #000;
+        }
+
         .input-wrapper select {
             width: 100%;
             border: 2px solid #D7EC00;
@@ -259,19 +269,32 @@
             padding: 16px 16px;
         }
 
+        .prelim {
+            font-size: 17px;
+        }
+
+        #results {
+            font-size: 23px;
+            font-weight: 600;
+        }
+
         @media only screen and (max-width: 500px) {
             .selects {
                 flex-direction: column;
             }
+
             .input-wrapper {
                 width: 100%;
             }
+
             .video-format {
                 margin-top: 16px;
             }
+
             .radio.duration {
                 width: max-content
             }
+
             .radio.chars {
                 width: max-content;
                 margin-right: 15px;
