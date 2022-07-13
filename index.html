@@ -14,21 +14,25 @@
             <div class="block selects">
                 <div class="input-wrapper video-type">
                     <label for="video_type">Выберите вид видеоролика</label>
-                    <select name="video_type" id="video_type">
-                        <option value="logo">Анимация логотипа</option>
-                        <option value="intro">Анимированные интро</option>
-                        <option value="explainer">Эксплейнер</option>
-                        <option value="presentation">Видеопрезентации</option>
-                        <option value="adv">Рекламный ролик</option>
-                        <option value="doodle">Дудл анимация</option>
-                    </select>
+                    <div class="select-container">
+                        <select name="video_type" id="video_type">
+                            <option value="logo">Анимация логотипа</option>
+                            <option value="intro">Анимированные интро</option>
+                            <option value="explainer">Эксплейнер</option>
+                            <option value="presentation">Видеопрезентации</option>
+                            <option value="adv">Рекламный ролик</option>
+                            <option value="doodle">Дудл анимация</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="input-wrapper video-format">
                     <label for="video_format">Выберите формат</label>
-                    <select name="video_format" id="video_format">
-                        <option id='default_format' value="0">2D</option>
-                        <option value="1">3D</option>
-                    </select>
+                    <div class="select-container">
+                        <select name="video_format" id="video_format">
+                            <option id='default_format' value="0">2D</option>
+                            <option value="1">3D</option>
+                        </select>
+                    </div>
                 </div>
 
             </div>
@@ -210,7 +214,7 @@
             -webkit-appearance: none;
             /* -moz-appearance: none; */
             /* appearance: none; */
-            /* padding: .5em; */
+            padding-left: 7px;
             /* background: transparent; */
             /* border: none; */
             /* border-radius: 3px; */
@@ -231,6 +235,28 @@
 
         .input-wrapper select:focus-visible {
             outline-color: #D7EC00;
+        }
+
+        .select-container {
+            position: relative;
+            display: inline;
+        }
+
+        .select-container:after {
+            content: "";
+            width: 0;
+            height: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .select-container:after {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            top: 12px;
+            right: 12px;
+            border-top: 8px solid #000;
+            opacity: 0.5;
         }
 
         .radio {
