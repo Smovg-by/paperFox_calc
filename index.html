@@ -65,7 +65,7 @@
                 <div class="input-wrapper radio chars">
                     <span class="title">Персонажи</span>
                     <label>
-                        <input type="radio" name="chars" value='0' checked="checked">
+                        <input id='default_char' type="radio" name="chars" value='0' checked="checked">
                         <label for="chars">Нет</label><br>
                     </label>
                     <label>
@@ -113,19 +113,40 @@
             doodle: [[10000, null], [15000, null], [22500, null], [33750, null], [50625, null]],
         }
 
-        //const charsCosts = [5000, 7500, 11250, 16875, 25313]
-        const charsCosts = [5000, 7500, 11250, 16875]
+        const charsCosts = [5000, 7500, 11250, 16875, 25313]
 
         const form = document.querySelector('form')
         const result = document.querySelector('#results')
         const videoSelect = document.querySelector('#video_type')
         const defaultFormat = document.querySelector('#default_format')
         const defaultTiming = document.querySelector('#default_timing')
+        const defaultChar = document.querySelector('#default_char')
         const durationInputs = document.querySelectorAll('.input-wrapper.duration input')
         const durationLabels = document.querySelectorAll('.input-wrapper.duration label > label')
+        const charsInputs = document.querySelectorAll('.input-wrapper.chars input')
+        const charsLabels = document.querySelectorAll('.input-wrapper.chars label > label')
         const videoFormatOptions = document.querySelectorAll('#video_format option')
 
         const disableField = () => {
+
+            if (data.video_format == 1) {
+                data.chars = 0
+                defaultChar.checked = true
+                charsInputs.forEach(el => {
+                    el.disabled = true
+                })
+                charsLabels.forEach(el => {
+                    el.style.color = 'grey'
+                })
+            } else {
+                charsInputs.forEach(el => {
+                    el.disabled = false
+                })
+                charsLabels.forEach(el => {
+                    el.style.color = 'inherit';
+                })
+            }
+
             const videoCosts = costsArray[data.video_type]
             durationInputs.forEach((el, index, arr) => {
                 if (index >= videoCosts.length) {
@@ -219,7 +240,7 @@
             font-size: 16px !important;
             background: none !important;
             width: 100%;
-            border: 2px solid #D7EC00;
+            border: 2px solid #E6F26A;
             height: 30px;
         }
 
@@ -228,7 +249,7 @@
         }
 
         .input-wrapper select:focus-visible {
-            outline-color: #D7EC00;
+            outline-color: #E6F26A;
         }
 
         .select-container {
@@ -270,10 +291,10 @@
             /* background: transparent; */
 
             font: inherit;
-            color: #D7EC00;
+            color: #E6F26A;
             width: 1.15em;
             height: 1.15em;
-            border: 0.1em solid #D7EC00;
+            border: 0.1em solid #E6F26A;
             border-radius: 50%;
             transform: translateY(-0.075em);
             display: grid;
@@ -292,7 +313,7 @@
 
         .radio input[type="radio"]:checked::before {
             transform: scale(1);
-            background-color: #D7EC00;
+            background-color: #E6F26A;
         }
 
         .radio>label {
@@ -304,7 +325,7 @@
         .result {
             display: flex;
             flex-direction: column;
-            background-color: #D7EC00;
+            background-color: #E6F26A;
             font: inherit;
             color: white;
             align-items: end;
