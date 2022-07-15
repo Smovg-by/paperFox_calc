@@ -240,7 +240,7 @@
             font-size: 16px !important;
             background: none !important;
             width: 100%;
-            border: 2px solid #E6F26A;
+            border: 2px solid #D7EC00;
             height: 30px;
         }
 
@@ -249,7 +249,7 @@
         }
 
         .input-wrapper select:focus-visible {
-            outline-color: #E6F26A;
+            outline-color: #D7EC00;
         }
 
         .select-container {
@@ -291,10 +291,10 @@
             /* background: transparent; */
 
             font: inherit;
-            color: #E6F26A;
+            color: #D7EC00;
             width: 1.15em;
             height: 1.15em;
-            border: 0.1em solid #E6F26A;
+            border: 0.1em solid #D7EC00;
             border-radius: 50%;
             transform: translateY(-0.075em);
             display: grid;
@@ -313,7 +313,7 @@
 
         .radio input[type="radio"]:checked::before {
             transform: scale(1);
-            background-color: #E6F26A;
+            background-color: #D7EC00;
         }
 
         .radio>label {
@@ -325,7 +325,7 @@
         .result {
             display: flex;
             flex-direction: column;
-            background-color: #E6F26A;
+            background-color: #D7EC00;
             font: inherit;
             color: white;
             align-items: end;
@@ -371,3 +371,160 @@
 </body>
 
 </html>
+
+
+<script defer>
+
+    const tabs = document.querySelectorAll('.vc_tta-tab')
+    const firstLoadContainer = document.querySelector('.vc_tta-panel.vc_active')
+    const loadMoreButton = document.querySelector('.more_projects')
+    const inActiveContainers = document.querySelectorAll('.vc_tta-panel:not(.vc_active)')
+    const INITIAL_ROWS_TO_SHOW = 2
+    const ROWS_TO_ADD = 2
+    let rowsAreShowed = 0
+
+    const getWrappersHeight = (rowsToShow, wrappers) => {
+        const PADDING_BOTTOM = 13
+        let height = 0;
+        if (wrappers.length > 0) {
+            rowsAreShowed = rowsAreShowed + rowsToShow
+            for (let i = 0; i < rowsToShow; i++) {
+                if (rowsToShow <= wrappers.length) {
+                    height = height + wrappers[i].clientHeight
+                }
+            }
+            return height + PADDING_BOTTOM
+        }
+        return height
+    }
+
+    tabs.forEach(() => {
+        addEventListener('click', (e) => {
+            e.stopImmediatePropagation()
+            rowsAreShowed = 0
+            let shownHeight = 0
+            const activeContainer = document.querySelector('.vc_tta-panel.vc_active')
+            const inActiveContainers = document.querySelectorAll('.vc_tta-panel:not(.vc_active)')
+            inActiveContainers.forEach(el => el.style.height = 0)
+            const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
+            shownHeight = getWrappersHeight(INITIAL_ROWS_TO_SHOW, wrappers)
+            if (shownHeight) {
+                activeContainer.style.height = `${shownHeight}px`;
+                activeContainer.style.overflow = 'hidden';
+                loadMoreButton.style.visibility = 'visible'
+                loadMoreButton.style.height = 'auto'
+            } else {
+                loadMoreButton.style.visibility = 'hidden'
+                loadMoreButton.style.height = '0'
+            }
+        })
+    })
+
+    loadMoreButton.addEventListener('click', (e) => {
+        e.stopImmediatePropagation()
+        const totalRows = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper').length
+        const activeContainer = document.querySelector('.vc_tta-panel.vc_active')
+        const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
+
+        const shownHeight = getWrappersHeight((ROWS_TO_ADD + rowsAreShowed), wrappers)
+        document.querySelector('.vc_tta-panel.vc_active').style.height = `${shownHeight}px`;
+
+        if (rowsAreShowed >= totalRows) {
+            loadMoreButton.style.visibility = 'hidden'
+            loadMoreButton.style.height = '0'
+        }
+    }
+    )
+
+
+    inActiveContainers.forEach(el => el.style.height = 0)
+    const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
+    const shownHeight = getWrappersHeight(INITIAL_ROWS_TO_SHOW, wrappers)
+
+    if (shownHeight) {
+        firstLoadContainer.style.height = `${shownHeight}px`;
+        firstLoadContainer.style.overflow = 'hidden';
+    }
+
+</script>
+
+<!-- <script defer>
+
+    const tabs = document.querySelectorAll('.vc_tta-tab')
+    const firstLoadContainer = document.querySelector('.vc_tta-panel.vc_active')
+    const loadMoreButton = document.querySelector('.more_projects')
+    const inActiveContainers = document.querySelectorAll('.vc_tta-panel:not(.vc_active)')
+    const INITIAL_ROWS_TO_SHOW = 2
+    const ROWS_TO_ADD = 2
+    let rowsAreShowed = 0
+
+    const getWrappersHeight = (rowsToShow, wrappers) => {
+        const PADDING_BOTTOM = 13
+        let height = 0;
+        if (wrappers.length > 0) {
+            rowsAreShowed = rowsAreShowed + rowsToShow
+            for (let i = 0; i < rowsToShow; i++) {
+                if (rowsToShow <= wrappers.length) { 
+                    height = height + wrappers[i].clientHeight 
+                }
+            }
+            return height + PADDING_BOTTOM
+        }
+        return height
+    }
+
+    tabs.forEach(() => {
+        addEventListener('click', (e) => {
+            e.stopImmediatePropagation()
+            rowsAreShowed = 0
+            let shownHeight = 0
+            const activeContainer = document.querySelector('.vc_tta-panel.vc_active')
+            const inActiveContainers = document.querySelectorAll('.vc_tta-panel:not(.vc_active)')
+            inActiveContainers.forEach(el => el.style.height = 0)
+            const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
+            shownHeight = getWrappersHeight(INITIAL_ROWS_TO_SHOW, wrappers)
+            if (shownHeight) {
+                activeContainer.style.height = `${shownHeight}px`;
+                activeContainer.style.overflow = 'hidden';
+                loadMoreButton.style.visibility = 'visible'
+                loadMoreButton.style.height = 'auto'
+            } else {
+                loadMoreButton.style.visibility = 'hidden'
+                loadMoreButton.style.height = '0'
+            }
+        })
+    })
+
+    loadMoreButton.addEventListener('click', (e) => {
+        e.stopImmediatePropagation()
+        const totalRows = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper').length
+        const activeContainer = document.querySelector('.vc_tta-panel.vc_active')
+        const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
+
+        if (rowsAreShowed >= totalRows) {
+            loadMoreButton.style.visibility = 'hidden'
+            loadMoreButton.style.height = '0'
+        } else {
+            // console.log('rowsAreShowed', rowsAreShowed);
+            // console.log('wrappers', wrappers.length);
+            const shownHeight = getWrappersHeight((ROWS_TO_ADD + rowsAreShowed), wrappers)
+            document.querySelector('.vc_tta-panel.vc_active').style.height = `${shownHeight}px`;
+        }
+        if (rowsAreShowed >= totalRows) {
+            loadMoreButton.style.visibility = 'hidden'
+            loadMoreButton.style.height = '0'
+        }
+    }
+    )
+
+
+    inActiveContainers.forEach(el => el.style.height = 0)
+    const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
+    const shownHeight = getWrappersHeight(INITIAL_ROWS_TO_SHOW, wrappers)
+
+    if (shownHeight) {
+        firstLoadContainer.style.height = `${shownHeight}px`;
+        firstLoadContainer.style.overflow = 'hidden';
+    }
+
+</script> -->
