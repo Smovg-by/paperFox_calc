@@ -373,78 +373,83 @@
 </html>
 
 
-<script defer>
+<script type="text/javascript">
 
-    const tabs = document.querySelectorAll('.vc_tta-tab')
-    const firstLoadContainer = document.querySelector('.vc_tta-panel.vc_active')
-    const loadMoreButton = document.querySelector('.more_projects')
-    const inActiveContainers = document.querySelectorAll('.vc_tta-panel:not(.vc_active)')
-    const INITIAL_ROWS_TO_SHOW = 2
-    const ROWS_TO_ADD = 2
-    let rowsAreShowed = 0
 
-    const getWrappersHeight = (rowsToShow, wrappers) => {
-        const PADDING_BOTTOM = 13
-        let height = 0;
-        if (wrappers.length > 0) {
-            rowsAreShowed = rowsAreShowed + rowsToShow
-            for (let i = 0; i < rowsToShow; i++) {
-                if (rowsToShow <= wrappers.length) {
-                    height = height + wrappers[i].clientHeight
+    document.addEventListener('DOMContentLoaded', () => { //this does not work
+
+        const tabs = document.querySelectorAll('.vc_tta-tab')
+        const firstLoadContainer = document.querySelector('.vc_tta-panel.vc_active')
+        const loadMoreButton = document.querySelector('.more_projects')
+        const inActiveContainers = document.querySelectorAll('.vc_tta-panel:not(.vc_active)')
+        const INITIAL_ROWS_TO_SHOW = 2
+        const ROWS_TO_ADD = 2
+        let rowsAreShowed = 0
+
+        const getWrappersHeight = (rowsToShow, wrappers) => {
+            const PADDING_BOTTOM = 13
+            let height = 0;
+            if (wrappers.length > 0) {
+                rowsAreShowed = rowsAreShowed + rowsToShow
+                for (let i = 0; i < rowsToShow; i++) {
+                    if (rowsToShow <= wrappers.length) {
+                        height = height + wrappers[i].clientHeight
+                    }
                 }
+                return height + PADDING_BOTTOM
             }
-            return height + PADDING_BOTTOM
+            return height
         }
-        return height
-    }
 
-    tabs.forEach(() => {
-        addEventListener('click', (e) => {
+        tabs.forEach(() => {
+            addEventListener('click', (e) => {
+                console.log('set height tab');
+                e.stopImmediatePropagation()
+                rowsAreShowed = 0
+                let shownHeight = 0
+                const activeContainer = document.querySelector('.vc_tta-panel.vc_active')
+                const inActiveContainers = document.querySelectorAll('.vc_tta-panel:not(.vc_active)')
+                inActiveContainers.forEach(el => el.style.height = 0)
+                const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
+                shownHeight = getWrappersHeight(INITIAL_ROWS_TO_SHOW, wrappers)
+                if (shownHeight) {
+                    activeContainer.style.height = `${shownHeight}px`;
+                    activeContainer.style.overflow = 'hidden';
+                    loadMoreButton.style.visibility = 'visible'
+                    loadMoreButton.style.height = 'auto'
+                } else {
+                    loadMoreButton.style.visibility = 'hidden'
+                    loadMoreButton.style.height = '0'
+                }
+            })
+        })
+
+        loadMoreButton.addEventListener('click', (e) => {
             e.stopImmediatePropagation()
-            rowsAreShowed = 0
-            let shownHeight = 0
-            const activeContainer = document.querySelector('.vc_tta-panel.vc_active')
-            const inActiveContainers = document.querySelectorAll('.vc_tta-panel:not(.vc_active)')
-            inActiveContainers.forEach(el => el.style.height = 0)
+            const totalRows = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper').length
             const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
-            shownHeight = getWrappersHeight(INITIAL_ROWS_TO_SHOW, wrappers)
-            if (shownHeight) {
-                activeContainer.style.height = `${shownHeight}px`;
-                activeContainer.style.overflow = 'hidden';
-                loadMoreButton.style.visibility = 'visible'
-                loadMoreButton.style.height = 'auto'
-            } else {
+
+            const shownHeight = getWrappersHeight((ROWS_TO_ADD + rowsAreShowed), wrappers)
+            document.querySelector('.vc_tta-panel.vc_active').style.height = `${shownHeight}px`;
+
+            if (rowsAreShowed >= totalRows) {
                 loadMoreButton.style.visibility = 'hidden'
                 loadMoreButton.style.height = '0'
             }
-        })
-    })
-
-    loadMoreButton.addEventListener('click', (e) => {
-        e.stopImmediatePropagation()
-        const totalRows = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper').length
-        const activeContainer = document.querySelector('.vc_tta-panel.vc_active')
-        const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
-
-        const shownHeight = getWrappersHeight((ROWS_TO_ADD + rowsAreShowed), wrappers)
-        document.querySelector('.vc_tta-panel.vc_active').style.height = `${shownHeight}px`;
-
-        if (rowsAreShowed >= totalRows) {
-            loadMoreButton.style.visibility = 'hidden'
-            loadMoreButton.style.height = '0'
         }
-    }
-    )
+        )
 
+        console.log('set height main');
 
-    inActiveContainers.forEach(el => el.style.height = 0)
-    const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
-    const shownHeight = getWrappersHeight(INITIAL_ROWS_TO_SHOW, wrappers)
+        inActiveContainers.forEach(el => el.style.height = 0)
+        const wrappers = document.querySelectorAll('.vc_tta-panel.vc_active .qodef-row-grid-section-wrapper')
+        const shownHeight = getWrappersHeight(INITIAL_ROWS_TO_SHOW, wrappers)
 
-    if (shownHeight) {
-        firstLoadContainer.style.height = `${shownHeight}px`;
-        firstLoadContainer.style.overflow = 'hidden';
-    }
+        if (shownHeight) {
+            firstLoadContainer.style.height = `${shownHeight}px`;
+            firstLoadContainer.style.overflow = 'hidden';
+        }
+    })
 
 </script>
 
@@ -464,8 +469,8 @@
         if (wrappers.length > 0) {
             rowsAreShowed = rowsAreShowed + rowsToShow
             for (let i = 0; i < rowsToShow; i++) {
-                if (rowsToShow <= wrappers.length) { 
-                    height = height + wrappers[i].clientHeight 
+                if (rowsToShow <= wrappers.length) {
+                    height = height + wrappers[i].clientHeight
                 }
             }
             return height + PADDING_BOTTOM
